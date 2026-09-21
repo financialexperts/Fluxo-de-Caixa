@@ -48,7 +48,18 @@
   var db = window.DB.client;
 
   /* ============ roteamento por sessão ============ */
+  // O link de recuperação já chega com sessão válida, então INITIAL_SESSION,
+  // SIGNED_IN e o getSession() inicial mandariam direto pra planilha. Enquanto
+  // a nova senha não for salva, qualquer rota cai na tela de troca de senha.
+  var recovering = window.DB.isRecovery;
+
   function route(session) {
+    if (recovering && session) {
+      document.getElementById("userbox").hidden = true;
+      showView("auth");
+      window.AuthView.showRecovery();
+      return;
+    }
     if (!session) {
       document.getElementById("userbox").hidden = true;
       window.AuthView.reset();
@@ -76,11 +87,8 @@
   }
 
   db.auth.onAuthStateChange(function (event, session) {
-    if (event === "PASSWORD_RECOVERY") {
-      showView("auth");
-      window.AuthView.showRecovery();
-      return;
-    }
+    if (event === "PASSWORD_RECOVERY") recovering = true;
+    if (event === "SIGNED_OUT") recovering = false;
     // TOKEN_REFRESHED dispara sozinho em segundo plano pra renovar a sessão,
     // sem o usuário fazer nada — se recarregássemos a planilha aqui, qualquer
     // valor ainda não salvo com sucesso (ex.: upsert que falhou) desaparecia
@@ -94,12 +102,15 @@
   });
 
   window.App = {
-    refresh: function () { db.auth.getSession().then(function (res) { route(res.data.session); }); }
+    refresh: function () { db.auth.getSession().then(function (res) { route(res.data.session); }); },
+    finishRecovery: function () { recovering = false; window.App.refresh(); }
   };
 
   window.AuthView.mount();
   window.OnboardingView.mount();
   window.SheetView.mount();
+
+  if (window.DB.linkError) window.AuthView.showLinkError(window.DB.linkError);
 
   showView("loading");
   db.auth.getSession().then(function (res) { route(res.data.session); });
