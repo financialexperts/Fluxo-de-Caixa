@@ -377,7 +377,7 @@ input{font:inherit}
 .sheet__row--totalstart > td{border-top:1px solid var(--line-strong)}
 
 /* ---------- Abas Projeção / Realizada ---------- */
-.sheet-tabs{border-top:0;padding-top:0;margin:0 0 18px;gap:14px}
+.sheet-tabs{border-top:0;padding-top:0;margin:26px 0 18px;gap:14px}
 
 /* ---------- Seletor de mês (dropdown próprio — um <select> nativo não dá
    pra estilizar por dentro, a lista aberta sempre usa o visual do
@@ -507,7 +507,7 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .auth__card .tabs{padding-left:18px;padding-right:18px}
   .tabs{grid-template-columns:1fr;gap:7px}
   .tabs--2{grid-template-columns:repeat(2,1fr)}
-  .sheet-tabs{gap:10px}
+  .sheet-tabs{margin-top:18px;gap:10px}
   .actions{flex-direction:column-reverse}
   .herostat{padding:18px}
   .sheetcard{padding:16px 16px 18px}
