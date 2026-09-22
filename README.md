@@ -98,7 +98,3 @@ Se você já tinha rodado o SQL de uma versão anterior desta funcionalidade (ta
 ```sql
 drop table if exists public.realized_entries;
 ```
-
-## Aviso
-
-Cada célula é salva assim que o aluno sai do campo (não precisa de botão "salvar"). Se a internet cair no meio de uma edição, aparece um aviso discreto acima da planilha.
